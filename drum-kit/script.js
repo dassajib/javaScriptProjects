@@ -1,23 +1,36 @@
-window.addEventListener('keydown', function(e) {
-    // get audio element with data key value
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
-    // if any key has no value then return
-    if(!audio) return 
-    // make current time 0 for double tap a key and execute
+// taking key as a parameter
+function soundPlay(e) {
+    // store key sound after clicking
+    const audio = document.querySelector(`audio[data-key='${e.keyCode}']`)
+    // store key div
+    const key = document.querySelector(`.key[data-key='${e.keyCode}']`)
+    // if key doesn't exsist then return
+    if(!audio) {
+        return;
+    }
+    // making key sound zero for frequently pressing and getting expecting result
     audio.currentTime = 0
+    // playing stored sound
     audio.play()
-    // for adding press style
+    // adding class playing for showing design after click
     key.classList.add('playing')
-})
+}
 
-// remove press style after specific time
-function removeFunction(e) {
-    if(e.propertyName !== 'transform') return 
+// remove func
+function removeFunc(e) {
+    if(e.propertyName !== 'transform') {
+        return 
+    }
+    // removing playing class
     this.classList.remove('playing')
 }
 
-const keys = document.querySelectorAll('.key');
+// storing all key's
+const keys = document.querySelectorAll('.keys')
+// identifying the pressing key and add an even listener called transitionend 
+keys.forEach(key => document.addEventListener('transitionend', removeFunc))
 
-// to get specific class that is pressed
-keys.forEach(key => key.addEventListener('transitionend', removeFunction))
+// calling function
+window.addEventListener('keydown', soundPlay)
+
+
